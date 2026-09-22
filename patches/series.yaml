@@ -14,7 +14,7 @@
 name: dispatcharr
 base:
   # ghcr.io/dispatcharr/dispatcharr:dev as running since 2026-09-16 (built 2026-09-15 23:21Z)
-  image: "ghcr.io/dispatcharr/dispatcharr@sha256:94ce2aad92c02dcedf764485f13f008e377bea37269b7ec5707daaf8b7096782"
+  image: "ghcr.io/dispatcharr/dispatcharr@sha256:129edb555d3a1bfdd9beef6ab92eefd28ed90bd72a58ab320efd4d30765944dd"
 patches:
   - id: m0028-subtitle-copy
     file: migrations/0028_add_subtitle_copy_to_default_profiles.py
