@@ -35,3 +35,7 @@ patches:
     file: patch-epg-hubfreeze.py
   - id: proxy-tuning
     file: patch-proxy-tuning.py
+  # Last on purpose: after every patch, the image's migration graph must load with one leaf per
+  # app (Django refuses to start otherwise -- 809fe55, 2026-09-26). Not a patch; a build gate.
+  - id: check-migrations
+    file: check-migrations.py
