@@ -16,12 +16,10 @@ base:
   # ghcr.io/dispatcharr/dispatcharr:dev as running since 2026-09-16 (built 2026-09-15 23:21Z)
   image: "ghcr.io/dispatcharr/dispatcharr@sha256:129edb555d3a1bfdd9beef6ab92eefd28ed90bd72a58ab320efd4d30765944dd"
 patches:
-  - id: m0028-subtitle-copy
-    file: migrations/0028_add_subtitle_copy_to_default_profiles.py
-    dest: /app/core/migrations/
-  - id: m0029-merge
-    file: migrations/0029_merge_20260914_1210.py
-    dest: /app/core/migrations/
+  # m0028-subtitle-copy and m0029-merge retired 2026-09-26: upstream took the subtitle-copy fix
+  # as core/0029_update_default_stream_and_output_profiles (a superset), and carrying ours beside
+  # it left two leaf 0029s -- Django refused to start. Databases that ran ours keep the two
+  # applied rows; Django ignores applied migrations whose files are gone.
   # Every PATCH entry of the DVR task script (placeholders, PATCH 15 teletext
   # sidecar, 16 HLS anchors, 17 caption state, 18...). PATCH 18a-d (recording_end after the remux), which retire
   # with upstream PR https://github.com/Dispatcharr/Dispatcharr/pull/1679 --
