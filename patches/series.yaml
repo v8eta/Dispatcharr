@@ -13,8 +13,9 @@
 # and stop on any `conflict`.
 name: dispatcharr
 base:
-  # ghcr.io/dispatcharr/dispatcharr:dev as running since 2026-09-16 (built 2026-09-15 23:21Z)
-  image: "ghcr.io/dispatcharr/dispatcharr@sha256:129edb555d3a1bfdd9beef6ab92eefd28ed90bd72a58ab320efd4d30765944dd"
+  # ghcr.io/dispatcharr/dispatcharr:dev as WUD reported it on 2026-09-25 (0.31.0-20260925005138),
+  # the first :dev with upstream's core/0029_update_default_stream_and_output_profiles
+  image: "ghcr.io/dispatcharr/dispatcharr@sha256:8c5953c2c9f6a39fc9fe7d630840debcea12e8f143cdfdfc75ec3587c43a6134"
 patches:
   # m0028-subtitle-copy and m0029-merge retired 2026-09-26: upstream took the subtitle-copy fix
   # as core/0029_update_default_stream_and_output_profiles (a superset), and carrying ours beside
