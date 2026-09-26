@@ -29,8 +29,8 @@ patches:
   - id: patch-tasks
     file: patch-tasks.py
     upstream_pr: https://github.com/Dispatcharr/Dispatcharr/pull/1679
-  - id: dedup-crossmatch
-    file: patch-dedup-crossmatch.py
+  # dedup-crossmatch retired 2026-09-26: every build since 0.29.0 reported it "superseded upstream"
+  # (an episode-key miss already falls through to the start-time window).
   - id: epg-hubfreeze
     file: patch-epg-hubfreeze.py
   - id: proxy-tuning
