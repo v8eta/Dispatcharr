@@ -22,10 +22,12 @@ patches:
   # it left two leaf 0029s -- Django refused to start. Databases that ran ours keep the two
   # applied rows; Django ignores applied migrations whose files are gone.
   # Every PATCH entry of the DVR task script (placeholders, PATCH 15 teletext
-  # sidecar, 16 HLS anchors, 17 caption state, 18...). PATCH 18a-d (recording_end after the remux), which retire
-  # with upstream PR https://github.com/Dispatcharr/Dispatcharr/pull/1679 --
-  # 18e-f are local and permanent. Not split per PATCH id: the script applies its
-  # entries as one ordered list against one file.
+  # sidecar, 16 HLS anchors, 17 caption state, 18...). PATCH 18a-d (recording_end after the remux) were
+  # upstream PR https://github.com/Dispatcharr/Dispatcharr/pull/1679, merged into dev on 2026-10-06:
+  # against a base that has it they no-op by marker (upstream's _dvr_emit_recording_end), against an older
+  # one they still apply. 18e-f are local and permanent; 18f has a second entry that puts the playlist
+  # snapshot into upstream's own emit helper. Delete 18a-d when no base without #1679 can be built.
+  # Not split per PATCH id: the script applies its entries as one ordered list against one file.
   - id: patch-tasks
     file: patch-tasks.py
     upstream_pr: https://github.com/Dispatcharr/Dispatcharr/pull/1679

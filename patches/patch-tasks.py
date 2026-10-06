@@ -554,7 +554,9 @@ PATCHES = [
     # --- PATCH 18b: remove the early (pre-remux) recording_end emit ---------
     {
         'name': 'recording_end_remove_early_emit',
-        'marker': 'PATCH 18b: recording_end moved past the remux',
+        # Upstream took #1679 into dev on 2026-10-06 and removed the early emit itself, so this
+        # anchor is gone there: the marker is upstream's own helper, which only the merged code has.
+        'marker': 'def _dvr_emit_recording_end',
         'anchor': (
             '    # Log system event for recording end\n'
             '    try:\n'
@@ -626,7 +628,9 @@ PATCHES = [
     # --- PATCH 18d: same emit from the crash-recovery finalize path ---------
     {
         'name': 'recording_end_recovery_emit',
-        'marker': 'recording end event for recovered recording',
+        # Merged upstream (#1679) as a call to _dvr_emit_recording_end, so the old marker text
+        # never appears there; the helper's definition is what says "already upstream".
+        'marker': 'def _dvr_emit_recording_end',
         'anchor': (
             '                rec.custom_properties = cp\n'
             '                _db_retry(\n'
@@ -667,6 +671,33 @@ PATCHES = [
             '                    )\n'
             '            except Exception as e:\n'
             '                logger.warning(f"Failed to finalize expired recording {rec.id}: {e}")'
+        ),
+    },
+    # --- PATCH 18f (upstream form): the snapshot into upstream's own emit ----
+    # Once #1679 is in the base image the emit is upstream's _dvr_emit_recording_end, 18c is
+    # skipped (its marker is upstream's call), and with it the 18f line that rode on 18c. This
+    # entry puts the same line into upstream's helper. Before the merge 18c's text already
+    # carries `hls_playlist_snapshot=`, which is this entry's marker, so it is skipped there.
+    {
+        'name': 'recording_end_snapshot_upstream_emit',
+        'marker': 'hls_playlist_snapshot=',
+        'anchor': (
+            '            **_dvr_recording_end_payload(\n'
+            '                cp, final_path, remux_success, start_time=start, end_time=end,\n'
+            '            ),\n'
+            '        )\n'
+            '    except Exception as e:\n'
+            '        logger.error(f"Could not log recording end event: {e}")'
+        ),
+        'replacement': (
+            '            **_dvr_recording_end_payload(\n'
+            '                cp, final_path, remux_success, start_time=start, end_time=end,\n'
+            '            ),\n'
+            '            # PATCH 18f: local-only -- threads PATCH 18e\'s playlist snapshot into the event.\n'
+            '            hls_playlist_snapshot=cp.get("_hls_playlist_snapshot") if isinstance(cp, dict) else None,\n'
+            '        )\n'
+            '    except Exception as e:\n'
+            '        logger.error(f"Could not log recording end event: {e}")'
         ),
     },
     # --- PATCH 18e: capture the playlist snapshot before the sweep ----------
